@@ -12,7 +12,7 @@ module Spree
       begin
         payment = Spree::Payment.find_by(response_code: response_code)
         response = RestClient.post("https://api.mollie.com/v2/payments/#{response_code}/refunds",
-                                    { amount: { value: payment.amount.to_s, currency: "EUR" } },
+                                    { amount: { value: payment.amount.to_s, currency: payment.order.currency } },
                                     { 'Authorization' => "Bearer #{preferred_api_key}" })
         return ActiveMerchant::Billing::Response.new(true, 'refunded', {}, authorization: response_code)
       rescue => error

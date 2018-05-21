@@ -6,7 +6,7 @@ module Spree
 
         def create_payment(order, mollie_method, redirect_url)
           amount = {
-            currency: 'EUR', #order.currency,
+            currency: order.currency,
             value: order.total.to_s
           }
           description = "Order #{order.number}"
