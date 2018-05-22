@@ -1,7 +1,7 @@
 module Spree
   CheckoutController.class_eval do
     before_action :load_mollie_payment_methods, only: [:edit]
-    before_action :pay_with_mollie, only: [:update]
+    before_action :pay_with_mollie_method, only: [:update]
 
     protected
 
@@ -25,7 +25,7 @@ module Spree
       @mollie_payment_methods = methods
     end
 
-    def pay_with_mollie
+    def pay_with_mollie_method
       return if params[:state] != 'payment'
 
       pm_id = params[:order][:payments_attributes].first[:payment_method_id]

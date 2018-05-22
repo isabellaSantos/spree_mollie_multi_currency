@@ -7,9 +7,10 @@ module Spree
         def create_payment(order, mollie_method, redirect_url)
           amount = {
             currency: order.currency,
-            value: order.total.to_s
+            value: ('%.2f' % order.total)
           }
           description = "Order #{order.number}"
+
           response = mollie_client.prepare_payment(amount, description, redirect_url, order_metadata(order), mollie_method)
           status_object = StatusObject.new(response)
 
