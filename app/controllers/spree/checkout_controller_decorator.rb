@@ -5,8 +5,8 @@ module Spree
 
     protected
 
-    def load_mollie_payment_methods
-      return if params[:state] != 'payment' || @order.state != 'payment'
+    def load_mollie_payment_methods(force = false)
+      return if force == false && (params[:state] != 'payment' || @order.state != 'payment')
 
       mollie_payment = @order.available_payment_methods.find { |pm| pm.is_a?(Spree::PaymentMethod::MollieMethod) }
       if mollie_payment
