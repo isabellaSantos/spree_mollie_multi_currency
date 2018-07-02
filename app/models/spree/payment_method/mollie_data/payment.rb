@@ -57,7 +57,12 @@ module Spree
 
         def update_payment_status(response_code)
           response = payment_status_in_mollie(response_code)
-          payment = Spree::Payment.find_by(response_code: response['id'])
+          if response['metadata'] && response['metadata']['order_id']
+            order = Spree::Order.friendly.find response['metadata']['order_id']
+            payment = order.payments.pending.last
+          else
+            payment = Spree::Payment.find_by(response_code: response['id'])
+          end
 
           unless payment.completed? || payment.failed?
             case response['status']
