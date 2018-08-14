@@ -27,6 +27,7 @@ module Spree
 
     def pay_with_mollie_method
       return if params[:state] != 'payment'
+      return if params[:order][:payments_attributes].nil?
 
       pm_id = params[:order][:payments_attributes].first[:payment_method_id]
       payment_method = Spree::PaymentMethod.find(pm_id)
