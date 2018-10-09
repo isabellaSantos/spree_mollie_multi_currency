@@ -13,7 +13,8 @@ module Spree
 
     def check_payment_status
       order = Spree::Order.friendly.find params[:order_id]
-      mollie_payment = order.payments.last
+      mollie_method = Spree::PaymentMethod.where(type: 'Spree::PaymentMethod::MollieMethod').first
+      mollie_payment = order.payments.where(payment_method_id: mollie_method.id).last
 
       paid_before = order.paid?
       mollie_payment.payment_method.update_payment_status(mollie_payment.response_code)
